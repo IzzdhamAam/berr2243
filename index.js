@@ -220,7 +220,7 @@ app.post('/passenger/register', async (req, res) => {
       "refferal" : req.body.refferal,
       "createdAt": new Date()
    })
-   res.send(' Thank You for registering MyTaxi UTeM. Here RM10 OFF for first ride :D  ')
+   res.send(' Thank You for registering MyTaxi UTeM ' + req.body.name + '! Here RM10 OFF for first ride :D')
 })
 
 //----------------------------------------------------------------------------------------------------------------------------------------

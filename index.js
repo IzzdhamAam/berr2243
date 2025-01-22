@@ -9,8 +9,6 @@ const saltRounds = 10;
 const secretKey = 'kucingbesar'; 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
-const cors = require('cors');
-const apiUrl = process.env.NODE_ENV === 'production' ? 'https://dzimz.azurewebsites.net' : 'http://localhost:3000';
 const uri = "mongodb+srv://b122310299:Kickflip.09@cluster0.mxtvq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const client = new MongoClient(uri, {
   serverApi: {
@@ -20,10 +18,6 @@ const client = new MongoClient(uri, {
   }
 });
 
-app.use(cors({
-  origin: 'https://dzimz.azurewebsites.net',
-  methods: 'GET,POST',
-}));
 
 function verifyToken(req, res, next) {
   const token = req.headers['authorization'];
@@ -52,9 +46,6 @@ async function checkBlacklist(token) {
   return false; 
 }
 
-app.get('/test', (req, res) => {
-  res.send('Server is working!');
-});
 
 //first page
 app.get('/', (req, res) => {
@@ -76,7 +67,7 @@ app.get('/admin/login', async (req, res) => {
 
   if (match) {
     const token = jwt.sign({ username: user.username, role: 'admin', name : user.name }, 'kucingbesar', { expiresIn: '2h' });
-    return res.status(200).json({ message: 'Login Success. Welcome To MyTaxi UTeM admin' + req.body.name , token });
+    return res.status(200).json({ message: 'Login Success. Welcome To MyTaxi UTeM admin ' + user.name , token });
   }
   else {
     return res.status(401).json('Login Failed. Please Check Your Password');
@@ -98,7 +89,7 @@ app.get('/driver/login', async (req, res) => {
 
   if (match) {
     const token = jwt.sign({ username: user.username, role: 'driver', name : user.name}, secretKey, { expiresIn: '2h' });
-    res.send({ message: 'Login Success. Welcome To MyTaxi UTeM And Drive Safe' + user.name , token });
+    res.send({ message: 'Login Success. Welcome To MyTaxi UTeM And Drive Safe ' + user.name , token });
   } else {
     res.send('Login Failed. Please Check Your Password');
   }
@@ -119,7 +110,7 @@ app.get('/passenger/login', async (req, res) => {
 
   if (match) {
     const token = jwt.sign({ username: user.username, role: 'passenger', phone_number : user.phone_number, name : user.name }, secretKey, { expiresIn: '2h' });
-    res.send({ message: 'Login Success. Welcome To MyTaxi UTeM And Have A Safe Ride' + req.body.name , token });
+    res.send({ message: 'Login Success. Welcome To MyTaxi UTeM And Have A Safe Ride ' + user.name , token });
   } else {
     res.send('Login Failed. Please Check Your Password');
   }

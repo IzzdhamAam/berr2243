@@ -45,26 +45,15 @@ async function checkBlacklist(token) {
   return false; 
 }
 
+app.get('/test', (req, res) => {
+  res.send('Server is working!');
+});
+
 // First page
-app.get('/', verifyToken, async (req, res) => {
-  try {
-   
-    const token = req.headers['authorization']?.split(' ')[1];
-
-    if (!token) {
-      return res.status(401).send('Unauthorized: No token provided');
-    }
-
-    
-    const blacklistedToken = await client.db("mytaxiutem").collection("blacklisted_tokens").findOne({ token });
-    if (blacklistedToken) {
-      console.error('Token is blacklisted');
-      return res.status(403).send('You have Log Out! Please Log In To Access');
-    }
-
-    res.send(`Welcome To MyTaxi UTeM, ${req.user.name}!`);
-  } catch (error) {
-    console.error('Error checking blacklisted token:', error);
+app.get('/', async (req, res) => {
+  
+    res.send(`Welcome To MyTaxi UTeM`);
+   {
     res.status(500).send('Internal Server Error');
   }
 });
@@ -84,10 +73,10 @@ app.get('/admin/login', async (req, res) => {
 
   if (match) {
     const token = jwt.sign({ username: user.username, role: 'admin', name : user.name }, 'kucingbesar', { expiresIn: '2h' });
-    res.send({ message: 'Login Success. Welcome To MyTaxi UTeM', token });
+    return res.status(200).json({ message: 'Login Success. Welcome To MyTaxi UTeM', token });
   }
   else {
-    res.send('Login Failed. Please Check Your Password');
+    return res.status(401).json('Login Failed. Please Check Your Password');
   }
 });
 

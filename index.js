@@ -9,6 +9,8 @@ const saltRounds = 10;
 const secretKey = 'kucingbesar'; 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
+const cors = require('cors');
+const apiUrl = process.env.NODE_ENV === 'production' ? 'https://dzimz.azurewebsites.net' : 'http://localhost:3000';
 const uri = "mongodb+srv://b122310299:Kickflip.09@cluster0.mxtvq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const client = new MongoClient(uri, {
   serverApi: {
@@ -18,6 +20,10 @@ const client = new MongoClient(uri, {
   }
 });
 
+app.use(cors({
+  origin: 'https://dzimz.azurewebsites.net',
+  methods: 'GET,POST',
+}));
 
 function verifyToken(req, res, next) {
   const token = req.headers['authorization'];
@@ -46,6 +52,9 @@ async function checkBlacklist(token) {
   return false; 
 }
 
+app.get('/test', (req, res) => {
+  res.send('Server is working!');
+});
 
 //first page
 app.get('/', (req, res) => {

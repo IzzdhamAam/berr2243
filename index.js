@@ -98,7 +98,7 @@ app.get('/driver/login', async (req, res) => {
 
   if (match) {
     const token = jwt.sign({ username: user.username, role: 'driver', name : user.name}, secretKey, { expiresIn: '2h' });
-    res.send({ message: 'Login Success. Welcome To MyTaxi UTeM And Drive Safe' + req.body.name , token });
+    res.send({ message: 'Login Success. Welcome To MyTaxi UTeM And Drive Safe' + user.name , token });
   } else {
     res.send('Login Failed. Please Check Your Password');
   }

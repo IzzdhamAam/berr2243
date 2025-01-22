@@ -969,7 +969,7 @@ app.post('/logout', async (req, res) => {
       }
 
       await blacklistToken(token);
-      res.status(200).send('Logged out successfully, token invalidated');
+      res.status(200).send('Logged out successfully, See You Again!');
     });
   } catch (error) {
     console.error('Error logging out:', error);

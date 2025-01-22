@@ -153,7 +153,7 @@ app.post('/admin/register', async (req, res) => {
       "username" : req.body.username,
       "password" : hash
    })
-   res.send(' Register successfully ' + req.body.username + req.password)
+   res.send(' Register successfully ' + req.body.name)
 })
 
 //register driver
@@ -975,9 +975,9 @@ app.post('/logout', async (req, res) => {
       if (err) {
         return res.status(403).send('Forbidden: Invalid token');
       }
-      await blacklistToken(token);
 
-      res.send('Logged out successfully, token invalidated');
+      await blacklistToken(token);
+      res.status(200).send('Logged out successfully, token invalidated');
     });
   } catch (error) {
     console.error('Error logging out:', error);
